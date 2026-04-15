@@ -1,20 +1,19 @@
 import os
+from telegram.ext import Updater, CommandHandler
 
-print("🚀 BOT STARTING...")
+TOKEN = os.environ.get("TOKEN")
 
-TOKEN = os.getenv("TOKEN")
+def start(update, context):
+    update.message.reply_text("سلام 👋 ربات روشنه!")
 
-print("TOKEN:", TOKEN)
+def main():
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
 
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+    dp.add_handler(CommandHandler("start", start))
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("سلام 👋 ربات روشنه!")
+    updater.start_polling()
+    updater.idle()
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-
-print("🤖 RUNNING...")
-
-app.run_polling()
+if __name__ == "__main__":
+    main()
